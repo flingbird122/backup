@@ -1,0 +1,740 @@
+mixed-port: 7890
+allow-lan: true
+bind-address: '*'
+mode: Rule
+log-level: silent
+external-controller: 127.0.0.1:9090
+dns:
+  enable: true
+  listen: 0.0.0.0:53
+  default-nameserver:
+    - 119.29.29.29
+    - 119.28.28.28
+    - 223.5.5.5
+    - 114.114.114.114
+  nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.dns.sb/dns-query
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - '*.lan'
+    - localhost.ptlogin2.qq.com
+    - '+.srv.nintendo.net'
+    - '+.stun.playstation.net'
+    - '+.msftconnecttest.com'
+    - '+.msftncsi.com'
+    - '+.xboxlive.com'
+    - 'msftconnecttest.com'
+    - 'xbox.*.microsoft.com'
+    - '*.battlenet.com.cn'
+    - '*.battlenet.com'
+    - '*.blzstatic.cn'
+    - '*.battle.net'
+proxies:
+ - name: P0
+   server: cc.cshcshmart.xyz
+   port: 443
+   type: vmess
+   uuid: e9d143e9-0b24-4f49-a894-5c29852193d9
+   alterId: 0
+   cipher: auto
+   tls: true
+   skip-cert-verify: false
+   network: ws
+   ws-opts:
+     path: /chengshuhui
+     headers:
+      Host: cc.cshcshmart.xyz
+ - name: P1
+   server: 211.75.11.74
+   port: 443
+   type: vmess
+   uuid: e9d143e9-0b24-4f49-a894-5c29852193d9
+   alterId: 0
+   cipher: auto
+   tls: true
+   skip-cert-verify: false
+   network: ws
+   ws-opts:
+     path: /chengshuhui
+     headers:
+      Host: cc.cshcshmart.xyz
+ - name: P2
+   server: 45.64.22.6
+   port: 443
+   type: vmess
+   uuid: e9d143e9-0b24-4f49-a894-5c29852193d9
+   alterId: 0
+   cipher: auto
+   tls: true
+   skip-cert-verify: false
+   network: ws
+   ws-opts:
+     path: /chengshuhui
+     headers:
+      Host: cc.cshcshmart.xyz
+ - name: P3
+   server: 45.64.22.23
+   port: 443
+   type: vmess
+   uuid: e9d143e9-0b24-4f49-a894-5c29852193d9
+   alterId: 0
+   cipher: auto
+   tls: true
+   skip-cert-verify: false
+   network: ws
+   ws-opts:
+     path: /chengshuhui
+     headers:
+      Host: cc.cshcshmart.xyz
+ - name: P4
+   server: 45.64.22.55
+   port: 443
+   type: vmess
+   uuid: e9d143e9-0b24-4f49-a894-5c29852193d9
+   alterId: 0
+   cipher: auto
+   tls: true
+   skip-cert-verify: false
+   network: ws
+   ws-opts:
+     path: /chengshuhui
+     headers:
+      Host: cc.cshcshmart.xyz
+ - name: P5
+   server: 128.14.162.48
+   port: 443
+   type: vmess
+   uuid: e9d143e9-0b24-4f49-a894-5c29852193d9
+   alterId: 0
+   cipher: auto
+   tls: true
+   skip-cert-verify: false
+   network: ws
+   ws-opts:
+     path: /chengshuhui
+     headers:
+      Host: cc.cshcshmart.xyz
+ - name: P6
+   server: 8.210.83.33
+   port: 443
+   type: vmess
+   uuid: e9d143e9-0b24-4f49-a894-5c29852193d9
+   alterId: 0
+   cipher: auto
+   tls: true
+   skip-cert-verify: false
+   network: ws
+   ws-opts:
+     path: /chengshuhui
+     headers:
+      Host: cc.cshcshmart.xyz
+proxy-groups:
+ - name: 选定代理
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Proxy.png
+   proxies:
+     - 负载均衡-轮询
+     - 负载均衡-散列
+     - 自动选择
+     - DIRECT
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+ - name: 负载均衡-轮询
+   type: load-balance
+   url: http://www.google.com/generate_204
+   interval: 300
+   strategy: round-robin
+   proxies:
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+ - name: 负载均衡-散列
+   type: load-balance
+   url: http://www.google.com/generate_204
+   interval: 300
+   strategy: consistent-hashing
+   proxies:
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+ - name: 自动选择
+   type: url-test
+   url: http://www.gstatic.com/generate_204
+   interval: 300
+   tolerance: 50
+   proxies:
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+ - name: Adblock
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/AdBlock.png
+   proxies:
+     - REJECT
+     - DIRECT
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+ - name: Privacy
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Reject.png
+   proxies:
+     - REJECT
+     - DIRECT
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+ - name: Hijacking
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Reject.png
+   proxies:
+     - REJECT
+     - DIRECT
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+ - name: AppleOTA
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Apple.png
+   proxies:
+     - REJECT
+     - DIRECT
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+
+ - name: Google
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Google.png
+   proxies:
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+     - DIRECT
+  
+ - name: Netflix
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Netflix.png  
+   proxies:
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+     - DIRECT
+
+ - name: Disney+
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Disney+.png   
+   proxies:
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+     - DIRECT
+
+ - name: HBO
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/HBO.png
+   proxies:
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+     - DIRECT
+
+ - name: Youtube
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Youtube.png
+   proxies:
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+     - Final
+     - DIRECT
+ 
+ - name: Spotify
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Spotify.png
+   proxies:
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+     - DIRECT
+
+ - name: TikTok
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Tiktok.png
+   proxies:
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+     - DIRECT
+
+ - name: Telegram
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Telegram.png
+   proxies:
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+     - DIRECT
+
+ - name: Clubhouse
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Clubhouse.png
+   proxies:
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+     - DIRECT
+
+ - name: Twitter
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Twitter.png
+   proxies:
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+     - DIRECT
+ 
+ - name: Speedtest
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Speedtest.png
+   proxies:
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+     - DIRECT
+  
+ - name: PayPal
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Paypal.png
+   proxies:
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+     - DIRECT
+  
+ - name: TestFlight
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/TestFlight.png
+   proxies:
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+     - DIRECT
+     
+ - name: Apple
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Apple.png
+   proxies:
+     - DIRECT
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+   
+ - name: Microsoft
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Microsoft.png
+   proxies:
+     - DIRECT
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+ - name: Bilibili
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Bilibili.png
+   proxies:
+     - DIRECT
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+
+ - name: Weibo
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Weibo.png
+   proxies:
+     - DIRECT
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+  
+ - name: Mainland
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Mainland.png
+   proxies:
+     - DIRECT
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+
+ - name: GlobleMedia
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/GMedia.png
+   proxies:
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+     - DIRECT
+            
+ - name: Globle
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Outside.png
+   proxies:
+     - 选定代理
+     - 自动选择
+     - P0
+     - P1
+     - P2
+     - P3
+     - P4
+     - P5
+     - P6
+     - DIRECT
+
+ - name: Final
+   type: select
+   icon: https://raw.githubusercontent.com/erdongchanyo/icon/main/Policy-Filter/Final01.png
+   proxies:
+     - DIRECT
+     - 选定代理
+     - 自动选择
+  
+rule-providers:
+  Adblock-rules: # 去广告精简版
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AdvertisingLite/AdvertisingLite_Classical.yaml
+    interval: 86400
+    path: ./ruleset/Adblock.yaml
+  Privacy-rules: # 隐私保护
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Privacy/Privacy_Classical.yaml
+    interval: 86400
+    path: ./ruleset/Privacy.yaml
+  Hijacking-rules: # 运营劫持
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Hijacking/Hijacking.yaml
+    interval: 86400
+    path: ./ruleset/Hijacking.yaml
+  AppleOTA-rules: # 系统升级
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/SystemOTA/SystemOTA.yaml
+    interval: 86400
+    path: ./ruleset/AppleOTA.yaml
+  Google-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.yaml
+    interval: 86400
+    path: ./ruleset/Google.yaml
+  Netflix-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Netflix/Netflix.yaml
+    interval: 86400
+    path: ./ruleset/Netflix.yaml
+  Disney-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Disney/Disney.yaml
+    interval: 86400
+    path: ./ruleset/Disney.yaml
+  HBO-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/HBO/HBO.yaml
+    interval: 86400
+    path: ./ruleset/HBO.yaml
+  Youtube-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.yaml
+    interval: 86400
+    path: ./ruleset/Youtube.yaml
+  Spotify-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Spotify/Spotify.yaml
+    interval: 86400
+    path: ./ruleset/Spotify.yaml
+  TikTok-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TikTok/TikTok.yaml
+    interval: 86400
+    path: ./ruleset/TikTok.yaml
+  Telegram-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml
+    interval: 86400
+    path: ./ruleset/Telegram.yaml
+  Clubhouse-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Clubhouse/Clubhouse.yaml
+    interval: 86400
+    path: ./ruleset/Clubhouse.yaml
+  ClubhouseIP-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ClubhouseIP/ClubhouseIP.yaml
+    interval: 86400
+    path: ./ruleset/ClubhouseIP.yaml
+  Twitter-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter.yaml
+    interval: 86400
+    path: ./ruleset/Twitter.yaml
+  Speedtest-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Speedtest/Speedtest.yaml
+    interval: 86400
+    path: ./ruleset/Speedtest.yaml
+  PayPal-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PayPal/PayPal.yaml
+    interval: 86400
+    path: ./ruleset/PayPal.yaml
+  TestFlight-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TestFlight/TestFlight.yaml
+    interval: 86400
+    path: ./ruleset/TestFlight.yaml
+  Apple-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple.yaml
+    interval: 86400
+    path: ./ruleset/Apple.yaml
+  Microsoft-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Microsoft/Microsoft.yaml
+    interval: 86400
+    path: ./ruleset/Microsoft.yaml
+  Bilibili-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/BiliBili/BiliBili.yaml 
+    interval: 86400
+    path: ./ruleset/Bilibili.yaml
+  Weibo-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Weibo/Weibo.yaml
+    interval: 86400
+    path: ./ruleset/Weibo.yaml
+  Mainland-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/China/China_Classical.yaml
+    interval: 86400
+    path: ./ruleset/Mainland.yaml
+  MainlandIP-rules:
+    behavior: ipcidr
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaIPs/ChinaIPs_IP.yaml
+    interval: 86400
+    path: ./ruleset/MainlandIP.yaml
+  GlobleMedia-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia_Classical.yaml
+    interval: 86400
+    path: ./ruleset/GlobleMedia.yaml
+  Globle-rules:
+    behavior: classical
+    type: http
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/release/rule/Clash/Global/Global_Classical.yaml
+    interval: 86400
+    path: ./ruleset/Globle.yaml
+rules:
+ - RULE-SET,Adblock-rules,Adblock
+ - RULE-SET,Privacy-rules,Privacy
+ - RULE-SET,Hijacking-rules,Hijacking
+ - RULE-SET,AppleOTA-rules,AppleOTA
+ - RULE-SET,Google-rules,Google
+ - RULE-SET,Netflix-rules,Netflix
+ - RULE-SET,Disney-rules,Disney+
+ - RULE-SET,HBO-rules,HBO
+ - RULE-SET,Youtube-rules,Youtube
+ - RULE-SET,Spotify-rules,Spotify
+ - RULE-SET,TikTok-rules,TikTok
+ - RULE-SET,Telegram-rules,Telegram
+ - RULE-SET,Clubhouse-rules,Clubhouse
+ - RULE-SET,ClubhouseIP-rules,Clubhouse
+ - RULE-SET,Twitter-rules,Twitter
+ - RULE-SET,Speedtest-rules,Speedtest
+ - RULE-SET,PayPal-rules,PayPal
+ - RULE-SET,TestFlight-rules,TestFlight
+ - RULE-SET,Apple-rules,Apple
+ - RULE-SET,Microsoft-rules,Microsoft
+ - RULE-SET,Bilibili-rules,Bilibili
+ - RULE-SET,Weibo-rules,Weibo
+ - RULE-SET,Mainland-rules,Mainland
+ - RULE-SET,MainlandIP-rules,Mainland
+ - RULE-SET,GlobleMedia-rules,GlobleMedia
+ - RULE-SET,Globle-rules,Globle
+ - GEOIP,CN,DIRECT
+ - MATCH,Final
