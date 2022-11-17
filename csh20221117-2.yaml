@@ -117,7 +117,7 @@ proxies:
      headers:
       Host: cc.cshcshmart.xyz
  - name: P6
-   server: 8.210.83.33
+   server: 146.56.162.25
    port: 443
    type: vmess
    uuid: e9d143e9-0b24-4f49-a894-5c29852193d9
