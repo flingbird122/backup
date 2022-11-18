@@ -47,7 +47,7 @@ proxies:
      headers:
       Host: cc.cshcshmart.xyz
  - name: P1
-   server: 211.75.11.74
+   server: 18.163.249.175
    port: 443
    type: vmess
    uuid: e9d143e9-0b24-4f49-a894-5c29852193d9
@@ -61,7 +61,7 @@ proxies:
      headers:
       Host: cc.cshcshmart.xyz
  - name: P2
-   server: 45.64.22.6
+   server: 45.64.22.55
    port: 443
    type: vmess
    uuid: e9d143e9-0b24-4f49-a894-5c29852193d9
@@ -89,7 +89,7 @@ proxies:
      headers:
       Host: cc.cshcshmart.xyz
  - name: P4
-   server: 45.64.22.55
+   server: 45.64.22.6
    port: 443
    type: vmess
    uuid: e9d143e9-0b24-4f49-a894-5c29852193d9
@@ -103,7 +103,7 @@ proxies:
      headers:
       Host: cc.cshcshmart.xyz
  - name: P5
-   server: 128.14.162.48
+   server: 188.166.218.185
    port: 443
    type: vmess
    uuid: e9d143e9-0b24-4f49-a894-5c29852193d9
@@ -117,7 +117,7 @@ proxies:
      headers:
       Host: cc.cshcshmart.xyz
  - name: P6
-   server: 146.56.162.25
+   server: 47.91.14.110
    port: 443
    type: vmess
    uuid: e9d143e9-0b24-4f49-a894-5c29852193d9
